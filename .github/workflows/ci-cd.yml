@@ -33,7 +33,12 @@ jobs:
 
       - name: Deploy to production
         if: github.ref == 'refs/heads/main'
+        env: 
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-              ssh root@172.105.174.68 "cd /opt/odoo17 && git pull origin main && ./odoo-bin -c /etc/odoo17.conf -d VerinsureOdoo17 -u all"
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh root@172.105.174.68 "cd /opt/odoo17 && git pull origin main && ./odoo-bin -c /etc/odoo17.conf -d VerinsureOdoo17 -u all"
 
           
