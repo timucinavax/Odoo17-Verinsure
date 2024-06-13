@@ -52,6 +52,6 @@ jobs:
         env: 
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          ssh -i ~/.ssh/id_rsa root@172.105.174.68 "cd /opt/odoo17 && git pull origin main && ./odoo-bin -c /etc/odoo17.conf -d VerinsureOdoo17 -u all"
+          ssh root@172.105.174.68 "cd /opt/odoo17 && git pull origin main && ./odoo-bin -c /etc/odoo17.conf -d VerinsureOdoo17 -u all"
 
           
