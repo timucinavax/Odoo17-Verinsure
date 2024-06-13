@@ -47,11 +47,16 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
 
+          # Debugging steps
+          ls -la ~/.ssh
+          cat ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa -v root@$SSH_HOST
+
       - name: Deploy to production
         if: github.ref == 'refs/heads/main'
         env: 
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          ssh -i ~/.ssh/id_rsa root@172.105.174.68 "cd /opt/odoo17 && git pull origin main && ./odoo-bin -c /etc/odoo17.conf -d VerinsureOdoo17 -u all"
+          ssh root@172.105.174.68 "cd /opt/odoo17 && git pull origin main && ./odoo-bin -c /etc/odoo17.conf -d VerinsureOdoo17 -u all"
 
           
