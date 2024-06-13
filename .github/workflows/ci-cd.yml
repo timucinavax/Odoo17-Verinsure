@@ -47,10 +47,15 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
 
-          # Debugging steps
-          ls -la ~/.ssh
-          cat ~/.ssh/id_rsa
-          ssh -i ~/.ssh/id_rsa -v root@$SSH_HOST
+           # Debugging steps
+            echo "Contents of ~/.ssh:"
+            ls -la ~/.ssh
+
+            echo "Permissions of ~/.ssh/id_rsa:"
+            stat ~/.ssh/id_rsa
+
+            echo "Attempting to connect to $SSH_HOST with verbose logging:"
+            ssh -i ~/.ssh/id_rsa -v root@$SSH_HOST "echo 'SSH connection successful'"
 
       - name: Deploy to production
         if: github.ref == 'refs/heads/main'
