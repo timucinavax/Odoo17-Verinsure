@@ -60,6 +60,13 @@ jobs:
           echo "Attempting to connect to $SSH_HOST with verbose logging:"
           ssh -i ~/.ssh/id_rsa -v root@$SSH_HOST "echo 'SSH connection successful'"
 
+      - name: Install Python dependencies on server
+        if: github.ref == 'refs/heads/main'
+        env: 
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          ssh root@172.105.174.68 "cd /opt/odoo17 && python3 -m pip install --upgrade pip && python3 -m pip install -r requirements.txt"
+
       - name: Deploy to production
         if: github.ref == 'refs/heads/main'
         env: 
