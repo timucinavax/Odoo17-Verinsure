@@ -43,19 +43,22 @@ jobs:
           SSH_HOST: 172.105.174.68
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
 
-           # Debugging steps
-            echo "Contents of ~/.ssh:"
-            ls -la ~/.ssh
+          # Debugging steps
+          echo "Contents of ~/.ssh:"
+          ls -la ~/.ssh
 
-            echo "Permissions of ~/.ssh/id_rsa:"
-            stat ~/.ssh/id_rsa
+          echo "Permissions of ~/.ssh/id_rsa:"
+          stat ~/.ssh/id_rsa
 
-            echo "Attempting to connect to $SSH_HOST with verbose logging:"
-            ssh -i ~/.ssh/id_rsa -v root@$SSH_HOST "echo 'SSH connection successful'"
+          echo "Contents of ~/.ssh/id_rsa:"
+          cat ~/.ssh/id_rsa
+
+          echo "Attempting to connect to $SSH_HOST with verbose logging:"
+          ssh -i ~/.ssh/id_rsa -v root@$SSH_HOST "echo 'SSH connection successful'"
 
       - name: Deploy to production
         if: github.ref == 'refs/heads/main'
@@ -63,5 +66,3 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           ssh root@172.105.174.68 "cd /opt/odoo17 && git pull origin main && ./odoo-bin -c /etc/odoo17.conf -d VerinsureOdoo17 -u all"
-
-          
