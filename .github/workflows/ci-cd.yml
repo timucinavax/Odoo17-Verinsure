@@ -35,7 +35,8 @@ jobs:
       - name: Run tests
         run: |
           # Add your test commands here
-          echo "Running tests"
+          # echo "Running tests"
+          odoo-bin --addons-path=addons -d test_db --stop-after-init --test-enable
 
       - name: Add SSH key and known hosts
         if: github.ref == 'refs/heads/main'
@@ -48,34 +49,10 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
 
-          # Debugging steps
-          echo "Contents of ~/.ssh:"
-          ls -la ~/.ssh
-
-          echo "Permissions of ~/.ssh/id_rsa:"
-          stat ~/.ssh/id_rsa
-
-          echo "Contents of ~/.ssh/id_rsa:"
-          cat ~/.ssh/id_rsa
-
-          echo "Attempting to connect to $SSH_HOST with verbose logging:"
-          ssh -i ~/.ssh/id_rsa -v root@$SSH_HOST "echo 'SSH connection successful'"
-
-          # Check connection and stay connected
-          ssh -i ~/.ssh/id_rsa -o ServerAliveInterval=60 root@$SSH_HOST "echo 'SSH connection alive'"
-
-      - name: Install Python dependencies on server
-        if: github.ref == 'refs/heads/main'
-        env: 
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          ssh -o ServerAliveInterval=60 root@172.105.174.68 "cd /opt/odoo17 && python3 -m pip install --upgrade pip && python3 -m pip install -r requirements.txt"
-
-      - name: Deploy to production
-        if: github.ref == 'refs/heads/main'
-        env: 
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          for i in {1..5}; do
-          ssh -o ServerAliveInterval=60 root@172.105.174.68 "cd /opt/odoo17 && git pull origin main && ./odoo-bin -c /etc/odoo17.conf -d VerinsureOdoo17 -u all" && break || sleep 15;
-          done
+           - name: Deploy to Production
+            run: |
+          ssh root@172.105.174.68 'bash -s' << 'EOF'
+          cd /opt/odoo17
+          git pull origin main
+          ./odoo-bin -c /etc/odoo17.conf
+          EOF
