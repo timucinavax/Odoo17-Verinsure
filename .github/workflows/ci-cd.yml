@@ -14,20 +14,26 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.10'
 
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-dev libldap2-dev libsasl2-dev libssl-dev
+          sudo apt-get install -y wget git python3-dev python3-pip build-essential libxslt1-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libjpeg-dev libpq-dev
 
-      - name: Install Python dependencies
+      - name: Install wkhtmltopdf
         run: |
+          wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+          sudo apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
+
+      - name: Install Odoo dependencies
+        run: |
+          pip install wheel
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pdfminer.six   # Add this line to install pdfminer.six
@@ -36,7 +42,7 @@ jobs:
         run: |
           # Add your test commands here
           # echo "Running tests"
-           ./odoo-bin -c odoo.conf --stop-after-init --test-enable --log-level=test
+          ./odoo-bin -c odoo.conf --stop-after-init --test-enable --log-level=test
 
       - name: Add SSH key and known hosts
         if: github.ref == 'refs/heads/main'
