@@ -42,7 +42,8 @@ jobs:
         run: |
           # Add your test commands here
           # echo "Running tests"
-          ./odoo-bin -c /etc/odoo17.conf --stop-after-init --test-enable --log-level=test
+          # ./odoo-bin -c /etc/odoo17.conf --stop-after-init --test-enable --log-level=test
+          ./odoo-bin -c ./odoo17.conf --stop-after-init --test-enable --log-level=test
 
       - name: Add SSH key and known hosts
         if: github.ref == 'refs/heads/main'
