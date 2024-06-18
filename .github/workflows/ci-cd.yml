@@ -42,7 +42,8 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Add SSH Known Hosts
-        run: echo "${{ secrets.SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+        run: |
+          ssh-keyscan -H 172.105.174.68 >> ~/.ssh/known_hosts
 
       - name: Run tests on Production Server
         run: |
