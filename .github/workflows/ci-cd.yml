@@ -40,6 +40,13 @@ jobs:
             run: |
             pip install lxml_html_clean
 
+            - name: Check outdated packages
+            run: |
+            pip list --outdated
+            pip list | grep lxml
+            pip list | grep lxml_html_clean
+
+
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
