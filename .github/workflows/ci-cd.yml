@@ -50,8 +50,8 @@ jobs:
 
       - name: Deploy new module to Odoo server
         run: |
-          scp -r addons/developer_mode odoo@172.105.174.68:/opt/odoo17/addons/
-          ssh odoo@172.105.174.68 './odoo-bin -c /etc/odoo17.conf'
+          scp -r addons/developer_mode root@172.105.174.68:/opt/odoo17/addons/
+          ssh root@172.105.174.68 './odoo-bin -c /etc/odoo17.conf'
 
       - name: Run tests on Production Server
         run: |
