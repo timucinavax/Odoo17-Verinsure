@@ -51,7 +51,7 @@ jobs:
       - name: Deploy new module to Odoo server
         run: |
           scp -r addons/developer_mode root@172.105.174.68:/opt/odoo17/addons/
-              ssh root@172.105.174.68 './odoo-bin -c /etc/odoo17.conf --stop-after-init --test-enable'
+          ssh root@172.105.174.68 'cd /opt/odoo17 && ./odoo-bin -c /etc/odoo17.conf --stop-after-init --test-enable --log-level=test'
 
 
       - name: Run tests on Production Server
