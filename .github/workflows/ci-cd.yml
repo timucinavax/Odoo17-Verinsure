@@ -37,13 +37,11 @@ jobs:
           pip install cryptography
           pip install -r requirements.txt
 
-
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with: 
          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           
-
       - name: Add SSH Known Hosts
         run: |
           ssh-keyscan -H 172.105.174.68 >> ~/.ssh/known_hosts
@@ -55,10 +53,11 @@ jobs:
           scp -r addons/base_accounting_kit root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/import_bank_statement_odoo root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/odoo_dynamic_dashboard root@172.105.174.68:/opt/odoo17/addons/
-          ssh root@172.105.174.68 'cd /opt/odoo17 && ./odoo-bin -c /etc/odoo17.conf --stop-after-init --test-enable --log-level=test'
 
+      - name: Install Python dependencies on Odoo server
+        run: |
+          ssh root@172.105.174.68 'pip3 install openpyxl qifparse'
 
       - name: Run tests on Production Server
         run: |
           ssh root@172.105.174.68 'cd /opt/odoo17 && ./odoo-bin -c /etc/odoo17.conf --stop-after-init --test-enable --log-level=test'
-
