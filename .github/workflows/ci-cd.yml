@@ -58,10 +58,6 @@ jobs:
         run: |
           ssh root@172.105.174.68 'pip3 install openpyxl'
 
-      - name: Restart Odoo server
-        run: |
-          ssh root@172.105.174.68 'sudo systemctl restart odoo'
-
       - name: Run tests on Production Server
         run: |
           ssh root@172.105.174.68 'cd /opt/odoo17 && ./odoo-bin -c /etc/odoo17.conf --stop-after-init --test-enable --log-level=test'
