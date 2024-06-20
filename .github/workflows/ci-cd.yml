@@ -53,6 +53,7 @@ jobs:
           scp -r addons/developer_mode root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/base_account_budget root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/base_accounting_kit root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/import_bank_statement_odoo root@172.105.174.68:/opt/odoo17/addons/
           ssh root@172.105.174.68 'cd /opt/odoo17 && ./odoo-bin -c /etc/odoo17.conf --stop-after-init --test-enable --log-level=test'
 
 
