@@ -55,6 +55,8 @@ jobs:
           scp -r addons/odoo_dynamic_dashboard root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/advance_cash_flow_statements root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/trial_balance_pdf root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/project_dashboard_odoo root@172.105.174.68:/opt/odoo17/addons/
+
 
 
       - name: Install Python dependencies on Odoo server
