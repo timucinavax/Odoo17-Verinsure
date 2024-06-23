@@ -57,6 +57,7 @@ jobs:
           scp -r addons/trial_balance_pdf root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/project_dashboard_odoo root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/projects_task_checklists root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/advanced_project_management_system root@172.105.174.68:/opt/odoo17/addons/
 
 
 
