@@ -61,6 +61,7 @@ jobs:
           scp -r addons/document_management_system root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/sh_base_document root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/account_move_multi_cancel root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/reset_journal_entries root@172.105.174.68:/opt/odoo17/addons/
         
 
 
