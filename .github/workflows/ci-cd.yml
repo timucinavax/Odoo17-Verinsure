@@ -63,6 +63,7 @@ jobs:
           scp -r addons/account_move_multi_cancel root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/reset_journal_entries root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/invoice_merging root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/multiple_payment_for_outstanding_dues root@172.105.174.68:/opt/odoo17/addons/
         
 
 
