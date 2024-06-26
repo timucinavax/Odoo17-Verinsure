@@ -73,6 +73,7 @@ jobs:
           scp -r addons/schedule_activity_to_multiple_users root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/bi_sms_client_generic root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/whatsapp_mail_messaging root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/whatsapp_redirect root@172.105.174.68:/opt/odoo17/addons/
 
 
 
