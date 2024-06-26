@@ -69,7 +69,8 @@ jobs:
           scp -r addons/chatgpt_support_chatter root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/easy_chatgpt_access root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/contacts_birthday_greetings root@172.105.174.68:/opt/odoo17/addons/
-     
+          scp -r addons/partner_emails_history root@172.105.174.68:/opt/odoo17/addons/
+  
 
 
 
