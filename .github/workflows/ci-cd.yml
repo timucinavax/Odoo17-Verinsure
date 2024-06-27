@@ -75,6 +75,7 @@ jobs:
           scp -r addons/whatsapp_mail_messaging root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/whatsapp_redirect root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/website_floating_whatsapp_icon root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/auto_daily_weekly_report root@172.105.174.68:/opt/odoo17/addons/
 
 
 
