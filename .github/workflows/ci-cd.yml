@@ -87,7 +87,7 @@ jobs:
 
       - name: Install Python dependencies on Odoo server
         run: |
-          ssh root@172.105.174.68 'pip3 install openpyxl qifparse pyfcm'
+          ssh root@172.105.174.68 'pip3 install openpyxl qifparse pyfcm httpagentparser'
 
       - name: Run tests on Production Server
         run: |
