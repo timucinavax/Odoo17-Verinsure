@@ -79,6 +79,7 @@ jobs:
           scp -r addons/project_progress_bar root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/mail_push_notification root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/psql_query_execute root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/user_login_alert root@172.105.174.68:/opt/odoo17/addons/
 
 
 
