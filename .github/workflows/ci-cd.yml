@@ -80,6 +80,7 @@ jobs:
           scp -r addons/mail_push_notification root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/psql_query_execute root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/user_login_alert root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/size_restriction_for_attachments root@172.105.174.68:/opt/odoo17/addons/
 
 
 
