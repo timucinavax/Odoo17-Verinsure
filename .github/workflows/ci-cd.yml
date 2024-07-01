@@ -90,6 +90,7 @@ jobs:
           scp -r addons/cron_failure_notification root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/database_delete_protection root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/restrict_web_debug root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/subscription_package root@172.105.174.68:/opt/odoo17/addons/
 
 
 
