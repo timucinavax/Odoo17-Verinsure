@@ -87,6 +87,7 @@ jobs:
           scp -r addons/schedule_mail_to_send root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/odoo_google_meet_integration root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/app_menu_alphabetical_order root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/cron_failure_notification root@172.105.174.68:/opt/odoo17/addons/
 
 
 
