@@ -93,6 +93,7 @@ jobs:
           scp -r addons/subscription_package root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/google_tag_manager_for_websites root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/google_analytics_odoo root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/website_pdf_preview_snippet root@172.105.174.68:/opt/odoo17/addons/
 
 
 
