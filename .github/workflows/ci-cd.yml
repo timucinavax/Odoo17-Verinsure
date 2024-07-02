@@ -96,6 +96,7 @@ jobs:
           scp -r addons/website_pdf_preview_snippet root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/print_minutes_of_meeting root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/upload_multi_document root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/document_approval root@172.105.174.68:/opt/odoo17/addons/
 
 
 
