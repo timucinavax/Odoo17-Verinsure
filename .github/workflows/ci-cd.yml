@@ -98,6 +98,7 @@ jobs:
           scp -r addons/upload_multi_document root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/document_approval root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/dropbox_integration root@172.105.174.68:/opt/odoo17/addons/
+          scp -r addons/auto_database_backup root@172.105.174.68:/opt/odoo17/addons/
 
 
 
@@ -105,7 +106,7 @@ jobs:
 
       - name: Install Python dependencies on Odoo server
         run: |
-          ssh root@172.105.174.68 'pip3 install openpyxl qifparse pyfcm httpagentparser dropbox'
+          ssh root@172.105.174.68 'pip3 install openpyxl qifparse pyfcm httpagentparser dropbox pyncclient nextcloud-api-wrapper boto3 paramiko'
 
       - name: Run tests on Production Server
         run: |
