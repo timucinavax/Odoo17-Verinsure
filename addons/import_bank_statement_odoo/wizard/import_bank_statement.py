@@ -63,66 +63,49 @@ class ImportBankStatement(models.TransientModel):
                         firstline = False
                         continue
                     # Reading the content from csv file
-                    if file_item.split(',') != ['']:
-                        if file_item.split(',')[0] and file_item.split(',')[1] \
-                                and file_item.split(',')[4]:
-                            date_obj = str(fields.date.today()) if not \
-                                file_item.split(',')[3] else \
-                                file_item.split(',')[
-                                    3]
-                            transaction_date = datetime.strptime(date_obj,
-                                                                 "%Y-%m-%d")
-                            partner = self.env['res.partner'].search(
-                                [('name', '=', file_item.split(',')[4])])
-                            # Creating a record in account.bank.statement model
-                            if partner:
-                                statement = self.env[
-                                    'account.bank.statement'].create({
-                                     'name': file_item.split(',')[0],
-                                     'line_ids': [
-                                        (0, 0, {
-                                            'date': transaction_date,
-                                            'payment_ref': 'csv file',
-                                            'partner_id': partner.id,
-                                            'journal_id': self.journal_id.id,
-                                            'amount': file_item.split(',')[1],
-                                            'amount_currency':
-                                                file_item.split(',')[2],
-                                        }),
-                                    ],
-                                })
-                            else:
-                                raise ValidationError(_("Partner not exist"))
+                    split_items = file_item.split(',')
+                    if len(split_items) > 4 and split_items[0] and split_items[1] and split_items[4]:
+                        date_obj = str(fields.date.today()) if not split_items[3] else split_items[3]
+                        transaction_date = datetime.strptime(date_obj, "%Y-%m-%d")
+                        partner = self.env['res.partner'].search([('name', '=', split_items[4])])
+                        # Creating a record in account.bank.statement model
+                        if partner:
+                            statement = self.env['account.bank.statement'].create({
+                                'name': split_items[0],
+                                'line_ids': [
+                                    (0, 0, {
+                                        'date': transaction_date,
+                                        'payment_ref': 'csv file',
+                                        'partner_id': partner.id,
+                                        'journal_id': self.journal_id.id,
+                                        'amount': split_items[1],
+                                        'amount_currency': split_items[2],
+                                    }),
+                                ],
+                            })
                         else:
-                            if not file_item.split(',')[0]:
-                                raise ValidationError(
-                                    _("Account name is not set"))
-                            elif not file_item.split(',')[1]:
-                                raise ValidationError(
-                                    _("Amount is not set"))
-                            elif not file_item.split(',')[4]:
-                                date_obj = str(fields.date.today()) if not \
-                                    file_item.split(',')[3] else \
-                                    file_item.split(',')[
-                                        3]
-                                transaction_date = datetime.strptime(date_obj,
-                                                                     "%Y-%m-%d")
-                                # Creating a record in account.bank.statement model
-                                statement = self.env[
-                                    'account.bank.statement'].create({
-                                    'name': file_item.split(',')[0],
-                                    'line_ids': [
-                                        (0, 0, {
-                                            'date': transaction_date,
-                                            'payment_ref': 'csv file',
-                                            'journal_id': self.journal_id.id,
-                                            'amount': file_item.split(',')[
-                                                1],
-                                            'amount_currency':
-                                                file_item.split(',')[2],
-                                        }),
-                                    ],
-                                })
+                            raise ValidationError(_("Partner not exist"))
+                    else:
+                        if not split_items[0]:
+                            raise ValidationError(_("Account name is not set"))
+                        elif not split_items[1]:
+                            raise ValidationError(_("Amount is not set"))
+                        elif not split_items[4]:
+                            date_obj = str(fields.date.today()) if not split_items[3] else split_items[3]
+                            transaction_date = datetime.strptime(date_obj, "%Y-%m-%d")
+                            # Creating a record in account.bank.statement model
+                            statement = self.env['account.bank.statement'].create({
+                                'name': split_items[0],
+                                'line_ids': [
+                                    (0, 0, {
+                                        'date': transaction_date,
+                                        'payment_ref': 'csv file',
+                                        'journal_id': self.journal_id.id,
+                                        'amount': split_items[1],
+                                        'amount_currency': split_items[2],
+                                    }),
+                                ],
+                            })
                 return {
                     'type': 'ir.actions.act_window',
                     'name': 'Statements',
@@ -153,8 +136,8 @@ class ImportBankStatement(models.TransientModel):
                         if partner:
                             statement = self.env[
                                 'account.bank.statement'].create({
-                                 'name': line[0],
-                                 'line_ids': [
+                                'name': line[0],
+                                'line_ids': [
                                     (0, 0, {
                                         'date': date_obj,
                                         'payment_ref': 'xlsx file',
@@ -162,8 +145,8 @@ class ImportBankStatement(models.TransientModel):
                                         'journal_id': self.journal_id.id,
                                         'amount': line[1],
                                     }),
-                                 ],
-                                })
+                                ],
+                            })
                         else:
                             raise ValidationError(_("Partner not exist"))
                     else:
