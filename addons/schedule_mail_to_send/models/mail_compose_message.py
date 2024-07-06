@@ -21,12 +21,14 @@
 #############################################################################
 import datetime
 import pytz
+import logging
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+_logger = logging.getLogger(__name__)
 
 class MailComposeMessage(models.TransientModel):
-    """This class add a field called schedule_time in this model, to have the
+    """This class adds a field called schedule_time in this model, to have the
     date and time for scheduling """
     _inherit = 'mail.compose.message'
 
@@ -35,7 +37,7 @@ class MailComposeMessage(models.TransientModel):
 
     @api.onchange('schedule_time')
     def _onchange_schedule_time(self):
-        """When the field 'schedule_time' change, it will replace the seconds
+        """When the field 'schedule_time' changes, it will replace the seconds
         as zero"""
         if self.schedule_time:
             self.schedule_time = self.schedule_time.replace(second=0)
@@ -59,26 +61,23 @@ class MailComposeMessage(models.TransientModel):
             'attachment_ids': attachment_list,
         })
         utc_current_datetime = fields.Datetime.now()
-        user_tz = pytz.timezone(self.env.context.get(
-            'tz') or self.env.user.tz)  # Access the time zone
-        date_today = pytz.utc.localize(utc_current_datetime).astimezone(
-            user_tz)  # Access local time
-        user_current_datetime = date_today.strftime(
-            '%Y-%m-%d %H:%M:%S')  # Converted to string and removed the utc time difference
-        user_current_date = datetime.datetime.strptime(user_current_datetime,
-                                                       "%Y-%m-%d %H:%M:%S").replace(
-            second=0)
-        if not self.schedule_time:
-            raise UserError('Invalid Schedule time')
-        if self.schedule_time and self.schedule_time > user_current_date:
+        user_tz_name = self.env.context.get('tz') or self.env.user.tz
+        try:
+            user_tz = pytz.timezone(user_tz_name)
+        except pytz.UnknownTimeZoneError:
+            _logger.error("Unknown timezone: %s. Defaulting to 'UTC'", user_tz_name)
+            user_tz = pytz.timezone('UTC')
+        date_today = pytz.utc.localize(utc_current_datetime).astimezone(user_tz)
+        user_current_datetime = date_today.strftime('%Y-%m-%d %H:%M:%S')
+        user_current_date = datetime.datetime.strptime(user_current_datetime, "%Y-%m-%d %H:%M:%S").replace(second=0)
+        if not self.schedule_time or self.schedule_time <= user_current_date:
             raise UserError('Invalid Schedule time')
         model = self.env.context['default_res_model']
         model_id = self.env['ir.model'].search([('model', '=', model)], limit=1)
         record_id = self.env.context['default_res_ids']
         record = self.env[model].browse(record_id)
         activity = {
-            'activity_type_id': self.env.ref(
-                'schedule_mail_to_send.mail_activity_schedule').id,
+            'activity_type_id': self.env.ref('schedule_mail_to_send.mail_activity_schedule').id,
             'summary': self.subject,
             'note': self.body,
             'date_deadline': self.schedule_time,
@@ -90,29 +89,21 @@ class MailComposeMessage(models.TransientModel):
         return {'type': 'ir.actions.client', 'tag': 'reload'}
 
     def send_scheduled_mail(self):
-        """This function is called by a scheduled action in each minute to
+        """This function is called by a scheduled action each minute to
         send the scheduled mails"""
         utc_current_datetime = fields.Datetime.now()
-        # Access the time zone
-        user_tz = pytz.timezone(self.env.context.get(
-            'tz') or self.env.user.tz)
-        # Access local time
-        date_today = pytz.utc.localize(utc_current_datetime).astimezone(
-            user_tz)
-        # Converted to string and removed the utc time difference
-        user_current_datetime = date_today.strftime(
-            '%Y-%m-%d %H:%M:%S')
-        # Again converted to datetime type and replace the seconds with 0
-        user_current_date = datetime.datetime.strptime(
-            user_current_datetime,
-            "%Y-%m-%d %H:%M:%S").replace(
-            second=0)
-        scheduled_mail_rec = self.env['mail.mail'].search(
-            [('scheduled_date', '<=', user_current_date)])
+        user_tz_name = self.env.context.get('tz') or self.env.user.tz
+        try:
+            user_tz = pytz.timezone(user_tz_name)
+        except pytz.UnknownTimeZoneError:
+            _logger.error("Unknown timezone: %s. Defaulting to 'UTC'", user_tz_name)
+            user_tz = pytz.timezone('UTC')
+        date_today = pytz.utc.localize(utc_current_datetime).astimezone(user_tz)
+        user_current_datetime = date_today.strftime('%Y-%m-%d %H:%M:%S')
+        user_current_date = datetime.datetime.strptime(user_current_datetime, "%Y-%m-%d %H:%M:%S").replace(second=0)
+        scheduled_mail_rec = self.env['mail.mail'].search([('scheduled_date', '<=', user_current_date)])
         if scheduled_mail_rec:
             for record in scheduled_mail_rec:
                 record.send()
-                planned_activity = self.env['mail.activity'].search(
-                    [('schedule_mail_id', '=', record.id)])
-                # unlink the planned activity
+                planned_activity = self.env['mail.activity'].search([('schedule_mail_id', '=', record.id)])
                 planned_activity.sudo().action_feedback(self)

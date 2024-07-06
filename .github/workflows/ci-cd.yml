@@ -48,6 +48,11 @@ jobs:
         run: |
           ssh-keyscan -H 172.105.174.68 >> ~/.ssh/known_hosts
 
+      - name: Deploy updated mail_compose_message.py to Odoo server
+        run: |
+          scp addons/schedule_mail_to_send/models/mail_compose_message.py root@172.105.174.68:/opt/odoo17/addons/schedule_mail_to_send/models/mail_compose_message.py
+
+
       - name: Deploy new module to Odoo server
         run: |
           scp -r addons/developer_mode root@172.105.174.68:/opt/odoo17/addons/
