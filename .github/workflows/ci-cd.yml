@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-       - dms-integration  # Add the new branch here for DMS integration
+       - 17.0-mig-dms   # Add the new branch here for DMS integration
   pull_request:
     branches:
       - main
-       - dms-integration  # Add the new branch here for DMS integration
+      - 17.0-mig-dms   # Add the new branch here for DMS integration
 
 jobs:
   build:
