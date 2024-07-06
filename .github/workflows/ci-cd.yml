@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-       - 17.0-mig-dms   # Add the new branch here for DMS integration
+      # - 17.0-mig-dms   # Add the new branch here for DMS integration
   pull_request:
     branches:
       - main
-      - 17.0-mig-dms   # Add the new branch here for DMS integration
+      #- 17.0-mig-dms   # Add the new branch here for DMS integration
 
 jobs:
   build:
@@ -106,7 +106,6 @@ jobs:
           scp -r addons/document_approval root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/dropbox_integration root@172.105.174.68:/opt/odoo17/addons/
           scp -r addons/auto_database_backup root@172.105.174.68:/opt/odoo17/addons/
-          scp -r addons/dms root@172.105.174.68:/opt/odoo17/addons/  # Add the DMS module here
 
 
 
